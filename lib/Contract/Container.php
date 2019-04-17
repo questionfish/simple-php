@@ -19,4 +19,6 @@ interface Container
     public function singleton($abstract, $concrete);
 
     public function make($abstract, $params = []);
+
+    static function getInstance();
 }

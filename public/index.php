@@ -2,14 +2,11 @@
 
 include dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-$container = new \SP\Container;
-$container->bind(\SP\Application::class, \SP\Application::class);
-$a = $container->make(\SP\Application::class);
-$b = $container->make(\SP\Application::class);
+$app = new \SP\Application(dirname(__DIR__));
 
-$container->singleton(\SP\Container::class, \SP\Container::class);
-$c = $container->make(\SP\Container::class);
-$d = $container->make(\SP\Container::class);
+$app->bind(\SP\Contract\Request::class, \SP\Request::class);
+$app->bind(\SP\Contract\Request::class, \SP\Request::class);
 
-var_dump($a === $b);
-var_dump($c === $d);
+$req = app(\SP\Contract\Request::class)->buildFromGlobals();
+
+var_dump($req);

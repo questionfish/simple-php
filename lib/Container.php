@@ -13,11 +13,18 @@ class Container implements BaseContainer
     const BIND_TYPE_NORMAL = 'normal';
     const BIND_TYPE_SINGLETON = 'singleton';
 
+    static protected $singleThis;
+
     protected $bind;
 
     protected $bindType;
 
-    protected $instance;
+    protected $instances;
+
+    public function __construct()
+    {
+        static::$singleThis = $this;
+    }
 
     public function bind($abstract, $concrete)
     {
@@ -31,7 +38,7 @@ class Container implements BaseContainer
 
     private function _bind($abstract, $concrete, $type)
     {
-        assert(class_exists($abstract), '$abstract must be a classname');
+        assert(interface_exists($abstract) || class_exists($concrete), '$abstract must be a classname');
         assert(class_exists($concrete), '$concrete must be a classname');
 
         if(!isset($this->bind[$abstract]) ||
@@ -47,7 +54,7 @@ class Container implements BaseContainer
 
     public function make($abstract, $params = [])
     {
-        assert(class_exists($abstract), '$abstract must be a classname');
+        assert(interface_exists($abstract) || class_exists($concrete), '$abstract must be a classname');
 
         if(!isset($this->bind[$abstract]) || !isset($this->bindType[$abstract])){
             return null;
@@ -56,15 +63,26 @@ class Container implements BaseContainer
         $bindClassName = $this->bind[$abstract];
         switch ($this->bindType[$abstract]){
             case self::BIND_TYPE_SINGLETON:
-                if(!isset($this->instance[$abstract])){
-                    $this->instance[$abstract] = new $bindClassName(... $params);
+                if(!isset($this->instances[$abstract])){
+                    $this->instances[$abstract] = new $bindClassName(... $params);
                 }
-                return $this->instance[$abstract];
+                return $this->instances[$abstract];
                 break;
             case self::BIND_TYPE_NORMAL:
                 return new $bindClassName(... $params);
                 break;
         }
         return null;
+    }
+
+    /**
+     * @return static
+     */
+    static function getInstance()
+    {
+        if(!isset(static::$singleThis)){
+            static::$singleThis = new static();
+        }
+        return static::$singleThis;
     }
 }
