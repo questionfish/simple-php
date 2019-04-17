@@ -15,7 +15,5 @@ interface Application
 
     public function route(): Route;
 
-    public function dispatch(Request $request): Response;
-
     public function send(Response $response);
 }

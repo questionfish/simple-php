@@ -73,6 +73,28 @@ class Application implements BaseApp
     }
 
 
+    public function pushMiddleware($middlewareName){
+        assert((is_string($middlewareName) && (class_exists($middlewareName) || interface_exists($middlewareName))) || is_callable($middlewareName));
+
+        if(array_search($middlewareName, $this->middleware) === false) {
+            $this->middleware[] = $middlewareName;
+        }
+        return $this;
+    }
+
+    public function terminateMiddleware(Request $request, Response &$response)
+    {
+        foreach ($this->middleware as $middlewareName){
+            if(!is_string($middlewareName)){
+                continue;
+            }
+            $middleware = $this->make($middlewareName);
+            if(method_exists($middleware, 'terminate')){
+                $middleware->terminate($request, $response);
+            }
+        }
+    }
+
     public function run()
     {
         $req = $this->request();
@@ -112,36 +134,5 @@ class Application implements BaseApp
         $this->terminateMiddleware($req, $resp);
         $this->send($resp);
         return true;
-    }
-
-    public function pushMiddleware($middlewareName){
-        assert((is_string($middlewareName) && (class_exists($middlewareName) || interface_exists($middlewareName))) || is_callable($middlewareName));
-
-        if(array_search($middlewareName, $this->middleware) === false) {
-            $this->middleware[] = $middlewareName;
-        }
-        return $this;
-    }
-
-    public function terminateMiddleware(Request $request, Response &$response)
-    {
-        foreach ($this->middleware as $middlewareName){
-            if(!is_string($middlewareName)){
-                continue;
-            }
-            $middleware = $this->make($middlewareName);
-            if(method_exists($middleware, 'terminate')){
-                $middleware->terminate($request, $response);
-            }
-        }
-    }
-
-    /**
-     * @param Request $request
-     * @return Response
-     */
-    public function dispatch(Request $request): Response
-    {
-        return new \SP\Response();
     }
 }
