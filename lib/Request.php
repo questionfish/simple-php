@@ -6,8 +6,9 @@
  */
 
 namespace SP;
+use \SP\Contract\Request as BaseReq;
 
-class Request implements \SP\Contract\Request
+class Request implements BaseReq
 {
     public $query;
     public $post;

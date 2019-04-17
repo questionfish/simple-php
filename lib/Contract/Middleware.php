@@ -7,8 +7,9 @@
 
 namespace SP\Contract;
 
-
 interface Middleware
 {
+    public function handle(Request $request);
 
+    public function terminate(Request $request, Response $response);
 }

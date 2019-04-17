@@ -9,5 +9,13 @@ namespace SP\Contract;
 
 interface Application
 {
+    public function run();
 
+    public function request(): Request;
+
+    public function route(): Route;
+
+    public function dispatch(Request $request): Response;
+
+    public function send(Response $response);
 }

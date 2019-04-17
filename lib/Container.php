@@ -21,11 +21,6 @@ class Container implements BaseContainer
 
     protected $instances;
 
-    public function __construct()
-    {
-        static::$singleThis = $this;
-    }
-
     public function bind($abstract, $concrete)
     {
         return $this->_bind($abstract, $concrete, self::BIND_TYPE_NORMAL);
@@ -54,9 +49,10 @@ class Container implements BaseContainer
 
     public function make($abstract, $params = [])
     {
-        assert(interface_exists($abstract) || class_exists($concrete), '$abstract must be a classname');
-
         if(!isset($this->bind[$abstract]) || !isset($this->bindType[$abstract])){
+            if(class_exists($abstract)){
+                return new $abstract;
+            }
             return null;
         }
 
@@ -78,11 +74,16 @@ class Container implements BaseContainer
     /**
      * @return static
      */
-    static function getInstance()
+    static function getInstance(): Container
     {
         if(!isset(static::$singleThis)){
             static::$singleThis = new static();
         }
         return static::$singleThis;
+    }
+
+    static function setInstance(BaseContainer $container)
+    {
+        return static::$singleThis = $container;
     }
 }

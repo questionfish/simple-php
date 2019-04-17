@@ -3,7 +3,7 @@ use \SP\Container;
 
 if(!function_exists('app'))
 {
-    function app($abstract = null, $params = []){
+    function app(string $abstract = null, array $params = []){
         if(!isset($abstract)){
             return Container::getInstance();
         }
