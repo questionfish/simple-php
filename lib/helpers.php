@@ -11,17 +11,26 @@ if(!function_exists('app'))
     }
 }
 
-function starts_with($string, $needle){
-    return substr($string, 0, strlen($needle)) === $needle;
-}
-
-function ends_with($string, $needle){
-    return substr($string, 0 - strlen($needle)) === $needle;
-}
-
-function trim_str($string, $toTrim){
-    if(!starts_with($string, $toTrim)){
-        return $string;
+if(!function_exists('starts_with')) {
+    function starts_with($string, $needle)
+    {
+        return substr($string, 0, strlen($needle)) === $needle;
     }
-    return substr($string, strlen($toTrim));
+}
+
+if(!function_exists('ends_with')) {
+    function ends_with($string, $needle)
+    {
+        return substr($string, 0 - strlen($needle)) === $needle;
+    }
+}
+
+if(!function_exists('ltrim_str')) {
+    function ltrim_str($string, $toTrim)
+    {
+        if (!starts_with($string, $toTrim)) {
+            return $string;
+        }
+        return substr($string, strlen($toTrim));
+    }
 }

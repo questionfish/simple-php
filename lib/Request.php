@@ -26,7 +26,7 @@ class Request implements BaseReq
         }
         foreach ($_SERVER as $key => $value){
             if(starts_with($key, "HTTP_")){
-                $req->header[strtolower(trim_str($key, "HTTP_"))] = $value;
+                $req->header[strtolower(ltrim_str($key, "HTTP_"))] = $value;
             }
         }
         return $req;
