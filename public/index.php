@@ -14,4 +14,5 @@ $c->singleton(\SP\Contract\Route::class, \SP\Route::class);
  * process
  */
 $app = app(\SP\Contract\Application::class, [dirname(__DIR__)]);
+$app->pushMiddleware(\App\Middleware\CopyRightMiddleware::class);
 $app->run();

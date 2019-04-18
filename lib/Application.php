@@ -88,7 +88,7 @@ class Application implements BaseApp
             if(!is_string($middlewareName)){
                 continue;
             }
-            $middleware = $this->make($middlewareName);
+            $middleware = app($middlewareName);
             if(method_exists($middleware, 'terminate')){
                 $middleware->terminate($request, $response);
             }
@@ -115,7 +115,7 @@ class Application implements BaseApp
             if(is_callable($middlewareName)){
                 $middleware = $middlewareName;
             } else {
-                $middleware = [$this->make($middlewareName), 'handler'];
+                $middleware = [app($middlewareName), 'handler'];
             }
             $res = call_user_func($middleware, $req);
             if($res instanceof Response){

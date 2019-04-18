@@ -6,7 +6,7 @@
  */
 
 namespace SP;
-use App\HelloController;
+use \App\Http\HelloController;
 use SP\Contract\Request;
 use SP\Contract\Route as BaseRoute;
 

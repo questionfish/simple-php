@@ -4,7 +4,7 @@
  * Date: 2019-04-18
  * Time: 01:36
  */
-namespace App;
+namespace App\Http;
 
 use \SP\Contract\Request;
 
