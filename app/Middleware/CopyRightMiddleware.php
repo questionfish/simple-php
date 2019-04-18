@@ -17,6 +17,6 @@ class CopyRightMiddleware
     }
 
     public function terminate(Request $request, Response &$response){
-        $response->setContent($response->getContent() . "<br>Copyright &copy questionfish.");
+        $response->setContent($response->getContent() . "<br>Copyright &copy questionfish & siguiws.");
     }
 }
