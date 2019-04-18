@@ -15,7 +15,7 @@ class RedisCacheBridge implements Cache
 
     public function __construct()
     {
-        $this->cache = new RedisCache('127.0.0.1', 6379);
+        $this->cache = new RedisCache('172.19.0.1', 6379);
     }
 
     public function get(string $key): string

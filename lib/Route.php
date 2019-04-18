@@ -12,13 +12,15 @@ use SP\Contract\Route as BaseRoute;
 
 class Route implements BaseRoute
 {
-    public function any($url, $function)
-    {
-        // TODO: Implement any() method.
-    }
-
     public function dispatch(Request $request)
     {
+        $this->mapping($request);
+
         return [HelloController::class, 'hello'];
+    }
+    
+    private function mapping()
+    {
+        $request->url();
     }
 }
