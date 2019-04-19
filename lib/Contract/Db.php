@@ -10,5 +10,5 @@ namespace SP\Contract;
 
 interface Db
 {
-
+    public function execute(string $sql);
 }

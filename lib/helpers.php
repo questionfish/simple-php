@@ -34,3 +34,50 @@ if(!function_exists('ltrim_str')) {
         return substr($string, strlen($toTrim));
     }
 }
+
+
+define('__ROOT__', dirname(__DIR__));
+define('__CONFIG_DIR__', __ROOT__ . DIRECTORY_SEPARATOR . 'config');
+
+if(!function_exists('config'))
+{
+    function config($key){
+        if(empty($key)){
+            return null;
+        }
+        $pieces = explode('.', $key);
+
+        $nowRoot = config_path();
+        $filepath = null;
+        $configure = null;
+        foreach ($pieces as $piece){
+            $tmp = $nowRoot . DIRECTORY_SEPARATOR . $piece;
+            if(is_dir($tmp)){
+                $nowRoot = $tmp;
+                continue;
+            }
+            if(file_exists($tmp . '.php')){
+                $filepath = $tmp . '.php';
+                $configure = include $filepath;
+                continue;
+            }
+            if(isset($filepath) && isset($configure)){
+                if(isset($configure[$piece])){
+                    $configure = $configure[$piece];
+                    continue;
+                } else {
+                    return null;
+                }
+            }
+            return null;
+        }
+        return $configure;
+    }
+}
+
+if(!function_exists('config_path'))
+{
+    function config_path(){
+        return __CONFIG_DIR__;
+    }
+}

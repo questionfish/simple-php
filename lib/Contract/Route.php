@@ -10,12 +10,6 @@ namespace SP\Contract;
 
 interface Route
 {
-    /**
-     * @param string $url
-     * @param string $function
-     * @return Route
-     */
-    public function any($url, $function);
 
     /**
      * @param Request $request

@@ -10,14 +10,20 @@ use \SP\Contract\Request as BaseReq;
 
 class Request implements BaseReq
 {
-    public $query;
-    public $post;
-    public $json;
-    public $header;
+    protected $query;
+    protected $post;
+    protected $json;
+    protected $header;
+    protected $url;
+    protected $method;
 
     static function buildFromGlobals()
     {
         $req = new Request();
+
+        $req->url = $_SERVER["REQUEST_URI"];
+        $req->method = $_SERVER["REQUEST_METHOD"];
+
         foreach ($_GET as $key => $value){
             $req->query[$key] = $value;
         }
@@ -29,6 +35,8 @@ class Request implements BaseReq
                 $req->header[strtolower(ltrim_str($key, "HTTP_"))] = $value;
             }
         }
+        
+
         return $req;
     }
 
@@ -67,5 +75,14 @@ class Request implements BaseReq
         return isset($this->header['cookie'][$key]) ? $this->header['cookie'][$key] : $default;
     }
 
+    public function url()
+    {
+        return $this->url;
+    }
+
+    public function method()
+    {
+        return $this->method;
+    }
 
 }
