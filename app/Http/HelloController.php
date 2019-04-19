@@ -7,11 +7,13 @@
 namespace App\Http;
 
 use \SP\Contract\Request;
+use SP\DataBase;
 
 class HelloController
 {
     public function hello(Request $request)
     {
+        DataBase::GetInstance()->execute("");
         return "hello";
     }
 }

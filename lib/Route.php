@@ -14,13 +14,32 @@ class Route implements BaseRoute
 {
     public function dispatch(Request $request)
     {
-        $this->mapping($request);
-
-        return [HelloController::class, 'hello'];
+        return $this->mapping($request);
     }
     
-    private function mapping()
+    /**
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function mapping(Request $request)
     {
-        $request->url();
+        $route = config("route.".$request->url());
+
+        if (!$route) {
+            $resp = app(Response::class);
+            $resp->setStatus(404);
+            $resp->setContent("404");
+            return $resp;
+        }
+
+        if ($route["method"] != strtolower($request->method())){
+            //403
+            $resp = app(Response::class);
+            $resp->setStatus(403);
+            $resp->setContent("403");
+            return $resp;
+        }
+        return [$route["controller"],$route["action"]];
     }
 }
