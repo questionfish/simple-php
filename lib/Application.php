@@ -99,7 +99,7 @@ class Application implements BaseApp
     {
         $req = $this->request();
         $call = $this->route()->dispatch($req);
-
+        
         if ($call instanceof \SP\Contract\Response) {
             $this->send($call);
             return;
