@@ -16,30 +16,29 @@ class Route implements BaseRoute
     {
         return $this->mapping($request);
     }
-    
-    /**
-     *
-     * @param Request $request
-     * @return void
-     */
+
     private function mapping(Request $request)
     {
-        $route = config("route.".$request->url());
+        $route = config("route")[$request->url()] ?? null;
 
         if (!$route) {
-            $resp = app(Response::class);
+            $resp = $this->resp();
             $resp->setStatus(404);
-            $resp->setContent("404");
+            $resp->setContent("404 Not Found");
             return $resp;
         }
 
         if ($route["method"] != strtolower($request->method())){
-            //403
-            $resp = app(Response::class);
-            $resp->setStatus(403);
-            $resp->setContent("403");
+            $resp = $this->resp();
+            $resp->setStatus(405);
+            $resp->setContent("405 Method Not Allowed");
             return $resp;
         }
         return [$route["controller"],$route["action"]];
+    }
+
+    public function resp(): \SP\Contract\Response
+    {
+        return app(Response::class);
     }
 }

@@ -98,14 +98,14 @@ class Application implements BaseApp
     public function run()
     {
         $req = $this->request();
-        $call = $this->route()->dispatch($req);
-        
-        if ($call instanceof \SP\Contract\Response) {
-            $this->send($call);
-            return;
+        $dispatched = $this->route()->dispatch($req);
+
+        if ($dispatched instanceof \SP\Contract\Response) {
+            $this->send($dispatched);
+            return false;
         }
 
-        $this->pushMiddleware(new class($call){
+        $this->pushMiddleware(new class($dispatched){
             public function __construct($call)
             {
                 $this->call = $call;

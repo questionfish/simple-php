@@ -23,4 +23,8 @@ interface Request
     public function header($key, $default = null);
 
     public function cookie($key, $default = null);
+
+    public function url();
+
+    public function method();
 }

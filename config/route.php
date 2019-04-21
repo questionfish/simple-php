@@ -1,5 +1,6 @@
 <?php
 
 return [
-    "/test/test" => ["method" => "get","controller" => App\Http\HelloController::class,"action" => "hello"],
+    "/" => ["method" => "get","controller" => App\Http\HelloController::class,"action" => "hello"],
+    "/test/test" => ["method" => "post","controller" => App\Http\HelloController::class,"action" => "hello"],
 ];
